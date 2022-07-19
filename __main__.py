@@ -1,18 +1,125 @@
 import pulumi
 import pulumi_aws as aws
 
+config = pulumi.Config()
+key_name = config.get('keyName')
+public_key = config.get('publicKey')
+
+def decode_key(key):
+    try:
+        key = base64.b64decode(key.encode('ascii')).decode('ascii')
+    except:
+        pass
+    if key.startswith('-----BEGIN RSA PRIVATE KEY-----'):
+        return key
+    return key.encode('ascii')
+
+private_key = config.require_secret('id.pem').apply(decode_key)
+
+virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc",
+cidr_block="10.0.0.0/16")
+
+privatesubnet = aws.ec2.Subnet("devopsjunc-private-subnet",
+    vpc_id=virtualprivatecloud.id,
+    cidr_block="10.0.1.0/24",
+    map_public_ip_on_launch=False,
+    tags={
+        "Name": "devopsjunc-private-subnet",
+    })
+
+publicsubnet = aws.ec2.Subnet("devopsjunc-public-subnet",
+    vpc_id=virtualprivatecloud.id,
+    cidr_block= "10.0.0.0/24",
+    map_public_ip_on_launch=True,
+    tags={
+        "Name": "devopsjunc-public-subnet",
+    })
+
 group = aws.ec2.SecurityGroup('web-sg',
     description='Enable HTTP access',
     ingress=[
-        { 'protocol': 'tcp', 'from_port': 80, 'to_port': 80, 'cidr_blocks': ['0.0.0.0/0'] }
-    ])
+        { 'protocol': 'tcp', 'from_port': 22, 'to_port': 22, 'cidr_blocks': ['0.0.0.0/0'] },
+        { 'protocol': 'tcp', 'from_port': 80, 'to_port': 80, 'cidr_blocks': ['0.0.0.0/0'] },
+    ],
+    egress=[
+        {
+            "protocol": "-1",
+            "from_port": 0,
+            "to_port": 0,
+            "cidr_blocks": ["0.0.0.0/0"],
+    }
+    ], 
+    vpc_id=virtualprivatecloud.id
+ )
 
 server = aws.ec2.Instance('web-server',
     ami='ami-08d4ac5b634553e16',
     instance_type='t2.micro',
-    deployer = aws.ec2.KeyPair("deployer", public_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDO01Gb0RjIRmLeYgBDB/SvR/vTBBeQ9f9X7p4K7bKUFT4wV3WO0B2NqPVn/TOZj5n9zkFFVLI5AfHqTndf6vWNQx03NGUB8TszOaSgrw1wLdXukZJBWelP8/NaN4SbIU8mAy4meu6fd6Pc0AlgvXy4qRUDN0f0ZFJLyrJqdoU+d18cplzz2jb9nqZJnrCdnfNf6WlsdfZ82lNKDwma5bAQUfqIJEizCqwue8af9FUiw9nH+lBTMCvLJ5l53UILtYB/Ahx8Ft6PSUeIal7WtWFrHEVmm1Fa8TiqJZsNHsKwCcxfdfO/5a/LPNWSWH5mlmFqNcFrUlEEWf87BoZZ9B02FCgeg/HDxxGO8Dm48+2wQ7wyswCfIVZM5XhFUtKXjfo9eJZW0Bqyt9xOIc+x+aJG5nOV9r5Ji7c+ZOEn5u0Pba0nT6H+BnqRydvHSVz5Lmn8n3DM7Y2hRUHKzMA8Sg+lkNghW+STV2v7fyedlAIKFDbqVjolzvZLS2QXhvG76Sk= root@del1-lhp-n80075")
-    vpc_security_group_ids=[group.name] # reference the security group resource above
+    key_name='id',
+    vpc_security_group_ids=[group.id],# reference the security group resource above
+    subnet_id=publicsubnet.id,
+ )
+
+rds_sg = aws.rds.SecurityGroup("rds_sg", 
+    ingress=[aws.rds.SecurityGroupIngressArgs(
+    cidr="10.0.0.0/24",
+    security_group_id=[group.id],
+    security_group_name=[group.name],
+    )]
 )
 
+
+rds_server = aws.rds.Instance("db-server",
+    allocated_storage=10,
+    engine="mysql",
+    engine_version="5.7",
+    instance_class="db.t3.micro",
+    db_name="mydb",
+    parameter_group_name="default.mysql5.7",
+    password="database",
+    skip_final_snapshot=True,
+    username="database",
+    vpc_security_group_ids=[rds_sg.id],
+)
+
+#bucket = aws.s3.Bucket("bucket",
+ #   acl="public-read",
+  #  tags={
+   #     "Environment": "Dev",
+    #    "Name": "My bucket",
+   # })
+
+
+#pulumi.export("vpcId", vpc.vpc_id)
+#pulumi.export("publicSubnetIds", vpc.public_subnet_ids)
+#pulumi.export("privateSubnetIds", vpc.private_subnet_ids)    
+#pulumi.export('bucket_name',  bucket.id)
+#pulumi.export('public_ip_db', default.public_id)
+#pulumi.export('public_dns_db', default.public_dns)
 pulumi.export('public_ip', server.public_ip)
-pulumi.export('public_dns', server.public_dns)
+pulumi.export('public_dns', server.public_dns)   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
