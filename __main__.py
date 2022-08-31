@@ -14,7 +14,7 @@ def decode_key(key):
         return key
     return key.encode('ascii')
 
-private_key = config.require_secret('id.pem').apply(decode_key)
+private_key = config.require_secret('Id.pem').apply(decode_key)
 
 virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc",
 cidr_block="10.0.0.0/16")
@@ -55,7 +55,7 @@ group = aws.ec2.SecurityGroup('web-sg',
 server = aws.ec2.Instance('web-server',
     ami='ami-08d4ac5b634553e16',
     instance_type='t2.micro',
-    #key_name='id',
+    key_name='Id',
     vpc_security_group_ids=[group.id],# reference the security group resource above
     subnet_id=publicsubnet.id,
  )
