@@ -52,7 +52,7 @@ server = aws.ec2.Instance('web-server',
  )
 
 default = aws.rds.SecurityGroup("default", ingress=[aws.rds.SecurityGroupIngressArgs(
-    cidr="10.0.0.0/24",
+    cidr_block="0.0.0.0/0",
 )])
 
 rds_server = aws.rds.Instance("db-server",
