@@ -2,8 +2,7 @@ import pulumi
 import pulumi_aws as aws
 
 config = pulumi.Config()
-key_name = config.get('keyName')error creating EC2 Subnet: InvalidSubnet.Range: The CIDR '10.1.0.0/16' is invalid.
-    	status code: 400, request id: 3265811a-cc33-4562-ad32-178e6b8c065c
+key_name = config.get('keyName')
  
 public_key = config.get('publicKey')
 
