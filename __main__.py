@@ -59,6 +59,14 @@ server = aws.ec2.Instance('web-server',
     subnet_id=publicsubnet.id,
  )
 
+default = aws.rds.SubnetGroup("default",
+    subnet_ids=[
+        virtualprivatecloud.id
+    ],
+    tags={
+        "Name": "My DB subnet group",
+    })
+
 rds_server = aws.rds.Instance("db-server",
     allocated_storage=10,
     engine="mysql",
@@ -69,7 +77,7 @@ rds_server = aws.rds.Instance("db-server",
     password="pulumidata",
     skip_final_snapshot=True,
     username="pulumi",                      
-    db_subnet_group_name = virtualprivatecloud.id,
+    db_subnet_group_name = default.id,
     vpc_security_group_ids = [group.id],
                              
 )
