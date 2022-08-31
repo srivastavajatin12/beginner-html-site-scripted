@@ -68,9 +68,9 @@ rds_server = aws.rds.Instance("db-server",
     parameter_group_name="default.mysql5.7",
     password="pulumidata",
     skip_final_snapshot=True,
-    username="pulumi",                       
-    vpc_security_group_ids=[group.id],
-    db_subnet_group_name = virtualprivatecloud.id                          
+    username="pulumi",                      
+    db_subnet_group_name = virtualprivatecloud.id,
+    security_group_names = group.id
 )
 
 bucket = aws.s3.Bucket("bucket",
