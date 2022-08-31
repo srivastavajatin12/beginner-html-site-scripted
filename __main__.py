@@ -2,7 +2,9 @@ import pulumi
 import pulumi_aws as aws
 
 config = pulumi.Config()
-key_name = config.get('keyName')
+key_name = config.get('keyName')error creating EC2 Subnet: InvalidSubnet.Range: The CIDR '10.1.0.0/16' is invalid.
+    	status code: 400, request id: 3265811a-cc33-4562-ad32-178e6b8c065c
+ 
 public_key = config.get('publicKey')
 
 def decode_key(key):
@@ -20,14 +22,14 @@ virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc", cidr_block="10.0.0.0/16")
 
 publicsubnet = aws.ec2.Subnet("devopsjunc-public-subnet",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "10.0.1.0/16",
+    cidr_block= "10.0.0.0/16",
     map_public_ip_on_launch=True,
     tags={
         "Name": "devopsjunc-public-subnet",
     })
 privatesubnet = aws.ec2.Subnet("devopsjunc-private-subnet",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "10.0.0.0/16",
+    cidr_block= "10.0.0.0/8",
     map_public_ip_on_launch=False,
     tags={
         "Name": "devopsjunc-private-subnet",
