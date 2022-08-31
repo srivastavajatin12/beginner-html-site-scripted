@@ -55,7 +55,7 @@ group = aws.ec2.SecurityGroup('web-sg',
 server = aws.ec2.Instance('web-server',
     ami='ami-08d4ac5b634553e16',
     instance_type='t2.micro',
-    key_name='id',
+    #key_name='id',
     vpc_security_group_ids=[group.id],# reference the security group resource above
     subnet_id=publicsubnet.id,
  )
