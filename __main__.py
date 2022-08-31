@@ -61,7 +61,7 @@ rds_server = aws.rds.Instance("db-server",
     password="pulumidata",
     skip_final_snapshot=True,
     username="pulumi",
-    db_subnet_group_name = publicsubnet.id                         
+    db_subnet_group_name = publicsubnet.id,                         
     vpc_security_group_ids=[group.id],
 )
 
