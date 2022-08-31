@@ -16,14 +16,21 @@ def decode_key(key):
 
 private_key = config.require_secret('Id.pem').apply(decode_key)
 
-virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc", cidr_block="172.0.0.0/24")
+virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc", cidr_block="10.0.0.0/24")
 
 publicsubnet = aws.ec2.Subnet("devopsjunc-public-subnet",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "172.0.0.0/24",
+    cidr_block= "10.0.0.0/24",
     map_public_ip_on_launch=True,
     tags={
         "Name": "devopsjunc-public-subnet",
+    })
+privatesubnet = aws.ec2.Subnet("devopsjunc-private-subnet",
+    vpc_id=virtualprivatecloud.id,
+    cidr_block= "10.0.1.0/24",
+    map_public_ip_on_launch=False,
+    tags={
+        "Name": "devopsjunc-private-subnet",
     })
 
 group = aws.ec2.SecurityGroup('web-sg',
@@ -61,7 +68,7 @@ rds_server = aws.rds.Instance("db-server",
     password="pulumidata",
     skip_final_snapshot=True,
     username="pulumi",
-    db_subnet_group_name = publicsubnet.id,                         
+    db_subnet_group_name = privatesubnet.id,                         
     vpc_security_group_ids=[group.id],
 )
 
