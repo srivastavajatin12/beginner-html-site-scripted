@@ -52,9 +52,19 @@ server = aws.ec2.Instance('web-server',
  )
 
 rds_sg = aws.rds.SecurityGroup("rds_sg", 
-    ingress=[aws.rds.SecurityGroupIngressArgs(
-    cidr="10.0.0.0/24",
-    )]
+    ingress=[
+        { 'protocol': 'tcp', 'from_port': 22, 'to_port': 22, 'cidr_blocks': ['0.0.0.0/0'] },
+        { 'protocol': 'tcp', 'from_port': 80, 'to_port': 80, 'cidr_blocks': ['0.0.0.0/0'] },
+    ],
+    egress=[
+        {
+            "protocol": "-1",
+            "from_port": 0,
+            "to_port": 0,
+            "cidr_blocks": ["0.0.0.0/0"],
+    }
+    ], 
+    vpc_id=virtualprivatecloud.id
 )
 
 
