@@ -51,10 +51,6 @@ server = aws.ec2.Instance('web-server',
     subnet_id=publicsubnet.id,
  )
 
-default = aws.rds.SecurityGroup("default", ingress=[aws.rds.SecurityGroupIngressArgs(
-    cidr="0.0.0.0/0",
-)])
-
 rds_server = aws.rds.Instance("db-server",
     allocated_storage=10,
     engine="mysql",
@@ -65,7 +61,7 @@ rds_server = aws.rds.Instance("db-server",
     password="database",
     skip_final_snapshot=True,
     username="database",
-    vpc_security_group_ids=[default.id],
+    vpc_security_group_ids=[group.id],
 )
 
 bucket = aws.s3.Bucket("bucket",
