@@ -51,27 +51,27 @@ server = aws.ec2.Instance('web-server',
     subnet_id=publicsubnet.id,
  )
 
-rds_sg = aws.rds.SecurityGroup("rds_sg", 
-    ingress=[aws.rds.SecurityGroupIngressArgs(
-    cidr="10.0.0.0/24",
-    security_group_id=[group.id],
-    security_group_name=[group.name],
-    )]
-)
+#rds_sg = aws.rds.SecurityGroup("rds_sg", 
+ #   ingress=[aws.rds.SecurityGroupIngressArgs(
+  #  cidr="10.0.0.0/24",
+   # security_group_id=[group.id],
+    #security_group_name=[group.name],
+    #)]
+#)
 
 
-rds_server = aws.rds.Instance("db-server",
-    allocated_storage=10,
-    engine="mysql",
-    engine_version="5.7",
-    instance_class="db.t3.micro",
-    db_name="mydb",
-    parameter_group_name="default.mysql5.7",
-    password="database",
-    skip_final_snapshot=True,
-    username="database",
-    vpc_security_group_ids=[rds_sg.id],
-)
+#rds_server = aws.rds.Instance("db-server",
+ #   allocated_storage=10,
+  #  engine="mysql",
+   # engine_version="5.7",
+    #instance_class="db.t3.micro",
+    #db_name="mydb",
+    #parameter_group_name="default.mysql5.7",
+    #password="database",
+    #skip_final_snapshot=True,
+    #username="database",
+    #vpc_security_group_ids=[rds_sg.id],
+#)
 
 bucket = aws.s3.Bucket("bucket",
     acl="public-read",
