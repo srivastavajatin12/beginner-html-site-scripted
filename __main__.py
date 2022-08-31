@@ -61,7 +61,7 @@ server = aws.ec2.Instance('web-server',
 
 default = aws.rds.SubnetGroup("default",
     subnet_ids=[
-        virtualprivatecloud.id
+        privatesubnet.id
     ],
     tags={
         "Name": "My DB subnet group",
