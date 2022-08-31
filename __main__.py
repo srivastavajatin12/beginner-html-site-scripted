@@ -58,9 +58,9 @@ rds_server = aws.rds.Instance("db-server",
     instance_class="db.t3.micro",
     db_name="mydb",
     parameter_group_name="default.mysql5.7",
-    password="database",
+    password="pulumidata",
     skip_final_snapshot=True,
-    username="database",
+    username="pulumi",
     vpc_security_group_ids=[group.id],
 )
 
