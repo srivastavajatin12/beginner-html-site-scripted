@@ -54,8 +54,6 @@ server = aws.ec2.Instance('web-server',
 rds_sg = aws.rds.SecurityGroup("rds_sg", 
     ingress=[aws.rds.SecurityGroupIngressArgs(
     cidr="10.0.0.0/24",
-    security_group_id=[group.id],
-    security_group_name=[group.name],
     )]
 )
 
