@@ -51,13 +51,13 @@ server = aws.ec2.Instance('web-server',
     subnet_id=publicsubnet.id,
  )
 
-#rds_sg = aws.rds.SecurityGroup("rds_sg", 
- #   ingress=[aws.rds.SecurityGroupIngressArgs(
-  #  cidr="10.0.0.0/24",
-   # security_group_id=[group.id],
-    #security_group_name=[group.name],
-    #)]
-#)
+rds_sg = aws.rds.SecurityGroup("rds_sg", 
+    ingress=[aws.rds.SecurityGroupIngressArgs(
+    cidr="10.0.0.0/24",
+    security_group_id=[group.id],
+    security_group_name=[group.name],
+    )]
+)
 
 
 #rds_server = aws.rds.Instance("db-server",
