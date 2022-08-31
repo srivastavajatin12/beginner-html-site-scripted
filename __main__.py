@@ -20,14 +20,14 @@ virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc", cidr_block="10.0.0.0/24")
 
 publicsubnet = aws.ec2.Subnet("devopsjunc-public-subnet",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "10.0.1.0/24",
+    cidr_block= "10.0.0.0/24",
     map_public_ip_on_launch=True,
     tags={
         "Name": "devopsjunc-public-subnet",
     })
 privatesubnet = aws.ec2.Subnet("devopsjunc-private-subnet",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "10.0.0.0/24",
+    cidr_block= "10.1.0.0/24",
     map_public_ip_on_launch=False,
     tags={
         "Name": "devopsjunc-private-subnet",
