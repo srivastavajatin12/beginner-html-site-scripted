@@ -74,7 +74,7 @@ server = aws.ec2.Instance('web-server',
     key_name='Id',
     vpc_security_group_ids=[group.id],# reference the security group resource above
     subnet_id=publicsubnet.id,
-    iam_instance_profile = "arn:aws:iam::711048882405:role/AmazonSSMRoleForInstancesQuickSetup"
+    iam_instance_profile = "AmazonSSMRoleForInstancesQuickSetup"
 
  )
 
