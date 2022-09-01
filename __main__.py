@@ -17,7 +17,11 @@ def decode_key(key):
 
 private_key = config.require_secret('Id.pem').apply(decode_key)
 
-virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc", cidr_block="172.0.0.0/16")
+virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc", 
+    cidr_block="172.0.0.0/16",
+    enable_dns_hostnames = True,
+    enable_dns_support = True,
+    )
 
 publicsubnet = aws.ec2.Subnet("devopsjunc-public-subnet",
     vpc_id=virtualprivatecloud.id,
@@ -69,7 +73,7 @@ server = aws.ec2.Instance('web-server',
     instance_type='t2.micro',
     key_name='Id',
     vpc_security_group_ids=[group.id],# reference the security group resource above
-    
+    subnet_id=publicsubnet.id,
  )
 
 default = aws.rds.SubnetGroup("default",
