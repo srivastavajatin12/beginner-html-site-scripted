@@ -69,7 +69,7 @@ server = aws.ec2.Instance('web-server',
     instance_type='t2.micro',
     key_name='Id',
     vpc_security_group_ids=[group.id],# reference the security group resource above
-    subnet_id=publicsubnet.id,
+    
  )
 
 default = aws.rds.SubnetGroup("default",
