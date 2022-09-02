@@ -75,7 +75,12 @@ server = aws.ec2.Instance('web-server',
     vpc_security_group_ids=[group.id],# reference the security group resource above
     subnet_id=publicsubnet.id,
     iam_instance_profile = "AmazonSSMRoleForInstancesQuickSetup"
-
+    user_data = """#!/bin/bash
+                 set -ex
+                 cd /tmp
+                 sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+                 sudo systemctl enable amazon-ssm-agent
+                 sudo systemctl start amazon-ssm-agent """
  )
 
 default = aws.rds.SubnetGroup("default",
