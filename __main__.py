@@ -11,7 +11,7 @@ prefix_name = "pulumiAKS"
 vnet_ip_range = "192.168.0.0/16"
 vm_ip_range = "192.168.16.0/24"
 
-private_key=""
+private_key="azure.pem"
 
 # Create an Azure Resource Group
 resource_group = resources.ResourceGroup(
