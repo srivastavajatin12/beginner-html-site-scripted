@@ -75,9 +75,9 @@ server = aws.ec2.Instance('web-server',
     vpc_security_group_ids=[group.id],# reference the security group resource above
     subnet_id=publicsubnet.id,
     iam_instance_profile = "AmazonSSMRoleForInstancesQuickSetup",
-    private_dns_name_options =[
-       "enable_resource_name_dns_a_record"
-    ],     
+    private_dns_name_options ={
+       enable_resource_name_dns_a_record : True
+    },     
     user_data = """#!/bin/bash
                  set -ex
                  cd /tmp
