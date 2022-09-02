@@ -46,7 +46,7 @@ privatesubnet2 = aws.ec2.Subnet("devopsjunc-private-subnet2",
     tags={
         "Name": "devopsjunc-private-subnet2",
     })
-
+'enable_resource_name_dns_a_record' is not defined
 group = aws.ec2.SecurityGroup('web-sg',
     description='Enable HTTP access',
     ingress=[
@@ -76,8 +76,8 @@ server = aws.ec2.Instance('web-server',
     subnet_id=publicsubnet.id,
     iam_instance_profile = "AmazonSSMRoleForInstancesQuickSetup",
     private_dns_name_options =[ {
-       enable_resource_name_dns_a_record : True,
-       hostname_type : "resource-name"
+       'enable_resource_name_dns_a_record' : True,
+       'hostname_type' : "resource-name"
     }],     
     user_data = """#!/bin/bash
                  set -ex
