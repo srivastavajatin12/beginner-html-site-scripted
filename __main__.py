@@ -46,7 +46,7 @@ privatesubnet2 = aws.ec2.Subnet("devopsjunc-private-subnet2",
     tags={
         "Name": "devopsjunc-private-subnet2",
     })
-'enable_resource_name_dns_a_record' is not defined
+
 group = aws.ec2.SecurityGroup('web-sg',
     description='Enable HTTP access',
     ingress=[
