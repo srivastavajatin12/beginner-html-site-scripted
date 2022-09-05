@@ -18,21 +18,21 @@ def decode_key(key):
 private_key = config.require_secret('Id.pem').apply(decode_key)
 
 virtualprivatecloud = aws.ec2.Vpc("devopsjunc-vpc", 
-    cidr_block="0.0.0.0/0",
+    cidr_block="0.0.0.0/16",
     enable_dns_hostnames = True,
     enable_dns_support = True,
     )
 
 publicsubnet = aws.ec2.Subnet("devopsjunc-public-subnet",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "0.0.0.0/0",
+    cidr_block= "0.0.0.0/24",
     map_public_ip_on_launch=True,
     tags={
         "Name": "devopsjunc-public-subnet",
     })
 privatesubnet = aws.ec2.Subnet("devopsjunc-private-subnet",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "10.0.0.0/0",
+    cidr_block= "10.0.0.0/24",
     map_public_ip_on_launch=False,
     availability_zone = "us-east-1b",                           
     tags={
@@ -40,7 +40,7 @@ privatesubnet = aws.ec2.Subnet("devopsjunc-private-subnet",
     })
 privatesubnet2 = aws.ec2.Subnet("devopsjunc-private-subnet2",
     vpc_id=virtualprivatecloud.id,
-    cidr_block= "10.0.0.0/0",
+    cidr_block= "10.0.0.0/24",
     map_public_ip_on_launch=False,
     availability_zone = "us-east-1a",                           
     tags={
