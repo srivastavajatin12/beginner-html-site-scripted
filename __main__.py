@@ -11,7 +11,7 @@ prefix_name = "pulumiAKS"
 vnet_ip_range = "192.168.0.0/16"
 vm_ip_range = "192.168.16.0/24"
 
-private_key="azure.pem"
+ssh_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDfLeEbljcts7f6jxEnWvdfjAMoIL/yBY8DE4GgVJlWxg91sMAiq8BisxfJblu5GAq2MeHvgx3K8DS5RV49JpZApeAUEImiC3jqrvE7qF7YJg2fU5DITNavonUsvAxXz+64AS/o5MVv39zsjMbQrP9Chj5daO++n7gJfB7WJgNFhnNcl7Z4easj8CcsDlpfWx7CKwAacKtowNuDDJtcY9YuNloqVG0E6U3bSmnVGn/+uHkMvPd2sOLytwvj7aQ46AQoYWTUcqlu/67NQhi8kzPo4HKOI1J3j/ZczqIrxhfqxsj3+PVlst+oPnL74/dk6IjICpl8iIHNCVYe70lQX4DmTocpyPqYVgeCNqrG8ivhIeUOh2zfbKUyHZThYuDVsrCiJf93VAnfiy0jbpP6YEjWw2slvMsTwVPmc3ri4GtzQsix32JBQJ7AodUF+SUBQRCZASo4FbgtPN2JVVOHQZaBI9lza2E/s975N+ZWaAY7vIekqNChJkA963pdLjfI0LU= generated-by-azure"
 
 # Create an Azure Resource Group
 resource_group = resources.ResourceGroup(
@@ -94,8 +94,8 @@ vm = compute.VirtualMachine(
             disable_password_authentication=True,
             ssh=compute.SshConfigurationArgs(
                 public_keys=[compute.SshPublicKeyArgs(
-                    key_data=private_key,
-                    path = "/home/global/.ssh/authorized_keys",
+                    key_data = ssh_key,
+                    path     = "/home/global/.ssh/authorized_keys",
                 )],
             ),
         ),
@@ -135,3 +135,11 @@ primary_key = pulumi.Output.all(resource_group.name, account.name) \
     )).apply(lambda accountKeys: accountKeys.keys[0].value)
 
 pulumi.export("primary_storage_key", primary_key)
+                                                   
+                                                                                                                                                                     
+
+
+                                                                                                                                                                
+
+
+                                                                          
