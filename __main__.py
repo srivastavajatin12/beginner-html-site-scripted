@@ -134,7 +134,7 @@ primary_key = pulumi.Output.all(resource_group.name, account.name) \
         account_name=args[1]
     )).apply(lambda accountKeys: accountKeys.keys[0].value)
 
- public_ip = vm.id.apply(lambda _: network.get_public_ip_address_output(
+public_ip = vm.id.apply(lambda _: network.get_public_ip_address_output(
         public_ip_address_name=public_ip.name,
         resource_group_name=resource_group.name))
 
