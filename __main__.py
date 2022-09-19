@@ -65,7 +65,7 @@ group = aws.ec2.SecurityGroup('web-sg',
             "cidr_blocks": ["0.0.0.0/0"],
     }
     ], 
-    vpc_id=virtualprivatecloud.id
+   # vpc_id=virtualprivatecloud.id
  )
 
 server = aws.ec2.Instance('web-server',
@@ -73,7 +73,7 @@ server = aws.ec2.Instance('web-server',
     instance_type='t2.micro',
     key_name='Id',
     vpc_security_group_ids=[group.id],# reference the security group resource above
-    subnet_id=publicsubnet.id,
+   # subnet_id=publicsubnet.id,
     iam_instance_profile = "AmazonSSMRoleForInstancesQuickSetup",
     private_dns_name_options ={
        "enable_resource_name_dns_a_record" : "True"
@@ -105,8 +105,8 @@ rds_server = aws.rds.Instance("db-server",
     password="pulumidata",
     skip_final_snapshot=True,
     username="pulumi",                      
-    db_subnet_group_name = default.id,
-    vpc_security_group_ids = [group.id],
+    #db_subnet_group_name = default.id,
+  #  vpc_security_group_ids = [group.id],
                              
 )
 
