@@ -4,6 +4,7 @@ from pulumi_azure_native import resources
 from pulumi_azure_native import network
 from pulumi_azure_native import containerservice
 from pulumi_azure_native import compute
+import pulumi_azure_native as azure_native
 
 
 prefix_name = "pulumiAKS"
@@ -133,18 +134,40 @@ primary_key = pulumi.Output.all(resource_group.name, account.name) \
         resource_group_name=args[0],
         account_name=args[1]
     )).apply(lambda accountKeys: accountKeys.keys[0].value)
+    
+#mysql server
+server = azure_native.sql.Server("server",
+    administrator_login="pulumi@srivastavajatin12gmail.onmicrosoft.com",
+    administrator_login_password="Kola93418",
+    administrators=azure_native.sql.ServerExternalAdministratorArgs(
+        azure_ad_only_authentication=True,
+        login="srivastava.jatin12@gmail.com",
+        principal_type="User",
+        sid=" 6d092d73-9ba1-43d6-b310-f019ac9350b3",
+        tenant_id="22e5336b-2e4c-4414-8596-01e25584aaba",
+    ),
+    location="West US",
+    resource_group_name="pulumiAKS-rgs",
+    server_name="mysql-test")
 
-public_ip = vm.id.apply(lambda _: network.get_public_ip_address_output(
-        public_ip_address_name=public_ip.name,
-        resource_group_name=resource_group.name))
+#database
+database = azure_native.sql.Database("database",
+    database_name="mydb",
+    location="West US",
+    resource_group_name="pulumiAKS-rgs",
+    server_name="mysql-test",
+    sku=azure_native.sql.SkuArgs(
+        name="S0",
+        tier="Standard",
+    ),
+     source_database_id="/subscriptions/861c7352-89aa-43cf-83c7-5e655de5127d/resourceGroups/pulumiAKS-rgs/providers/Microsoft.Sql/servers/mysql-test/databases/testdb")
+
 
 pulumi.export("primary_storage_key", primary_key)
-pulumi.export("public_ip", public_ip)
                                                    
                                                                                                                                                                      
 
 
                                                                                                                                                                 
-
 
                                                                           
