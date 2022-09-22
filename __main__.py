@@ -51,7 +51,7 @@ group = aws.ec2.SecurityGroup('web-sg',
     description='Enable HTTP access',
     egress = [
           {
-           cidr_blocks      : [ "0.0.0.0/0", ],
+           cidr_block      : [ "0.0.0.0/0", ],
            description      : "",
            from_port        : 0,
            ipv6_cidr_blocks : [],
@@ -64,7 +64,7 @@ group = aws.ec2.SecurityGroup('web-sg',
        ],
       ingress = [
           {
-           cidr_blocks      : [ "0.0.0.0/0", ],
+           cidr_block      : [ "0.0.0.0/0", ],
            description      : "",
            from_port        : 22,
            ipv6_cidr_blocks : [],
