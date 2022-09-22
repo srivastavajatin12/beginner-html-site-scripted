@@ -61,7 +61,7 @@ group = aws.ec2.SecurityGroup('web-sg',
            self             : false,
            to_port          : 0
           }
-       ]
+       ],
       ingress = [
           {
            cidr_blocks      : [ "0.0.0.0/0", ],
