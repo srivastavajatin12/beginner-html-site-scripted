@@ -49,15 +49,16 @@ privatesubnet2 = aws.ec2.Subnet("devopsjunc-private-subnet2",
 
 group = aws.ec2.SecurityGroup('web-sg',
     description='Enable HTTP access',
-    ingress=[
+    ingress = [
         {
+            "protocol": "0",
             "from_port": 22,
             "ipv6_cidr_blocks" : [],
             "prefix_list_ids"  : [],
             "cidr_blocks": ["0.0.0.0/0"]
     },
     ],
-    egress=[
+    egress = [
         {
             "protocol": "-1",
             "from_port": 0,
