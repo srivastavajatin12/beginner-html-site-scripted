@@ -49,23 +49,29 @@ privatesubnet2 = aws.ec2.Subnet("devopsjunc-private-subnet2",
 
 group = aws.ec2.SecurityGroup('web-sg',
     description='Enable HTTP access',
-    ingress=[
-        {
-            "protocol": "-1",
-            "from_port": 0,
-            "to_port": 0,
-            "cidr_blocks": ["0.0.0.0/0"],
-    },
-    ],
-    egress=[
-        {
-            "protocol": "-1",
-            "from_port": 0,
-            "to_port": 0,
-            "cidr_blocks": ["0.0.0.0/0"],
-    }
-    ], 
-   # vpc_id=virtualprivatecloud.id
+    egress = [
+          {
+           cidr_blocks      = [ "0.0.0.0/0", ]
+           description      = ""
+           from_port        = 0
+           ipv6_cidr_blocks = []
+           prefix_list_ids  = []
+           protocol         = "-1"
+           security_groups  = []
+           self             = false
+           to_port          = 0
+          }
+       ]
+      ingress = [
+          {
+           cidr_blocks      = [ "0.0.0.0/0", ]
+           description      = ""
+           from_port        = 22
+           ipv6_cidr_blocks = []
+           prefix_list_ids  = []
+          }
+      ]
+     # vpc_id=virtualprivatecloud.id
  )
 
 server = aws.ec2.Instance('web-server',
