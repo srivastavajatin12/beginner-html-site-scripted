@@ -51,7 +51,7 @@ group = aws.ec2.SecurityGroup('web-sg',
     description='Enable HTTP access',
     ingress = [
         {
-            "protocol": "0",
+            "protocol": "-1",
             "from_port": 22,
             "to_port": 0,
             "ipv6_cidr_blocks" : [],
